@@ -1,6 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <color name="colorPrimaryDark">#00574B</color>
+
+    <color name="light_gray">#a7c0cd</color>
+    <color name="indigo">#6002ee</color>
+    <color name="indigo_dark">#0000ba</color>
+    <color name="indigo_light">#9c47ff</color>
+    <color name="green">#FF03DAC5</color>
+
+    <color name="purple_200">#FFBB86FC</color>
+    <color name="colorPrimary">#FF6200EE</color>
+    <color name="purple_700">#FF3700B3</color>
+    <color name="colorAccent">#FF03DAC5</color>
+    <color name="colorAccent40Alfa">#6603DAC5</color>
+    <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="color_gray">#66000000</color>
+    <color name="pink">#e040fb</color>
+    <color name="pink_dark">#aa00c7</color>
+    <color name="pink_light">#ff79ff</color>
+
 </resources>
