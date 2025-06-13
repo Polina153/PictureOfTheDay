@@ -61,7 +61,7 @@
         <item name="cornerSize">8dp</item>
     </style>
 
-    <!--iOs style
+  <!--  iOs style
     <style name="AppShapeAppearance.SmallComponent" parent="ShapeAppearance.MaterialComponents.SmallComponent">
    <item name="cornerFamily">rounded</item>
    <item name="cornerSize">18dp</item>

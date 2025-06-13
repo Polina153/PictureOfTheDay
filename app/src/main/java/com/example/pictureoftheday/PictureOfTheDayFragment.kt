@@ -102,10 +102,14 @@ class PictureOfTheDayFragment : Fragment() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
+            R.id.app_bar_fav -> activity?.let { startActivity(Intent(it, ApiActivity::class.java)) }
             android.R.id.home -> {
                 activity?.let {
                     BottomNavigationDrawerFragment().show(it.supportFragmentManager, "tag")
                 }
+            }
+            android.R.id.title -> {
+
             }
         }
         return super.onOptionsItemSelected(item)
