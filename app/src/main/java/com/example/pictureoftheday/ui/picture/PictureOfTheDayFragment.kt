@@ -1,6 +1,5 @@
-package com.example.pictureoftheday
+package com.example.pictureoftheday.ui.picture
 
-import BottomNavigationDrawerFragment
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -15,12 +14,17 @@ import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.content.ContextCompat.getDrawable
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import coil.api.load
+import com.example.pictureoftheday.MainActivity
+import com.example.pictureoftheday.R
 import com.example.pictureoftheday.databinding.FragmentPictureOfTheDayBinding
+import com.example.pictureoftheday.ui.api.ApiActivity
+import com.example.pictureoftheday.ui.apibottom.ApiBottomActivity
+import com.example.pictureoftheday.ui.settings.SettingsFragment
 import com.google.android.material.bottomappbar.BottomAppBar
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -103,13 +107,19 @@ class PictureOfTheDayFragment : Fragment() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.app_bar_fav -> activity?.let { startActivity(Intent(it, ApiActivity::class.java)) }
+            R.id.app_bar_settings -> activity?.let { startActivity(
+                Intent(
+                    it,
+                    ApiBottomActivity::class.java
+                )
+            ) }
+
             android.R.id.home -> {
                 activity?.let {
                     BottomNavigationDrawerFragment().show(it.supportFragmentManager, "tag")
                 }
             }
             android.R.id.title -> {
-
             }
         }
         return super.onOptionsItemSelected(item)
@@ -131,15 +141,25 @@ class PictureOfTheDayFragment : Fragment() {
                 isMain = false
                 binding.bottomAppBar.navigationIcon = null
                 binding.bottomAppBar.fabAlignmentMode = BottomAppBar.FAB_ALIGNMENT_MODE_END
-                binding.fab.setImageDrawable(getDrawable(context, R.drawable.ic_back_fab))
+                binding.fab.setImageDrawable(
+                    ContextCompat.getDrawable(
+                        context,
+                        R.drawable.ic_back_fab
+                    )
+                )
                 binding.bottomAppBar.replaceMenu(R.menu.menu_bottom_bar_other_screen)
                 navigateToSettingsFragment()
             } else {
                 isMain = true
                 binding.bottomAppBar.navigationIcon =
-                    getDrawable(context, R.drawable.ic_hamburger_menu_bottom_bar)
+                    ContextCompat.getDrawable(context, R.drawable.ic_hamburger_menu_bottom_bar)
                 binding.bottomAppBar.fabAlignmentMode = BottomAppBar.FAB_ALIGNMENT_MODE_CENTER
-                binding.fab.setImageDrawable(getDrawable(context, R.drawable.ic_plus_fab))
+                binding.fab.setImageDrawable(
+                    ContextCompat.getDrawable(
+                        context,
+                        R.drawable.ic_plus_fab
+                    )
+                )
                 binding.bottomAppBar.replaceMenu(R.menu.menu_bottom_bar)
             }
         }

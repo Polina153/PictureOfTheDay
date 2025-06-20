@@ -1,4 +1,4 @@
-package com.example.pictureoftheday
+package com.example.pictureoftheday.ui.picture
 
 import com.google.gson.GsonBuilder
 import okhttp3.Interceptor

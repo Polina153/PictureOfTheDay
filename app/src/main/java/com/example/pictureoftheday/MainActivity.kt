@@ -2,10 +2,10 @@ package com.example.pictureoftheday
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import com.example.pictureoftheday.ui.picture.PictureOfTheDayFragment
 
 class MainActivity : AppCompatActivity() {
     @SuppressLint("MissingInflatedId")

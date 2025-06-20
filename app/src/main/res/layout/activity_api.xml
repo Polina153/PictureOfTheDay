@@ -6,7 +6,7 @@
     android:id="@+id/api_activity"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".ApiActivity"
+    tools:context=".ui.api.ApiActivity"
     >
 
     <androidx.viewpager.widget.ViewPager

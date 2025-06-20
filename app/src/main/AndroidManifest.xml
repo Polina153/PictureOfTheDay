@@ -15,7 +15,10 @@
         android:theme="@style/IndigoTheme"
         tools:targetApi="31">
         <activity
-            android:name=".ApiActivity"
+            android:name=".ui.apibottom.ApiBottomActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.api.ApiActivity"
             android:exported="false" />
         <activity
             android:name=".MainActivity"

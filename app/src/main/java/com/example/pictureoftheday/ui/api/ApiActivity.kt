@@ -1,7 +1,6 @@
-package com.example.pictureoftheday
+package com.example.pictureoftheday.ui.api
 
 import android.os.Bundle
-import android.provider.CalendarContract
 import android.view.LayoutInflater
 import android.view.View
 import androidx.activity.enableEdgeToEdge
@@ -11,10 +10,9 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.viewpager.widget.ViewPager
+import com.example.pictureoftheday.R
 import com.example.pictureoftheday.databinding.ActivityApiBinding
-import com.google.android.material.progressindicator.CircularProgressIndicator
 import me.relex.circleindicator.CircleIndicator
-
 
 class ApiActivity : AppCompatActivity() {
 
@@ -68,7 +66,7 @@ class ApiActivity : AppCompatActivity() {
 
     }
 
-    private fun setCustomTabs() {
+  /*  private fun setCustomTabs() {
         val layoutInflater = LayoutInflater.from(this)
         binding.tabLayout.getTabAt(0)?.customView =
             layoutInflater.inflate(R.layout.activity_api_custom_tab_earth, null)
@@ -77,7 +75,7 @@ class ApiActivity : AppCompatActivity() {
         binding.tabLayout.getTabAt(2)?.customView =
             layoutInflater.inflate(R.layout.activity_api_custom_tab_weather, null)
     }
-
+*/
 
     private fun setHighlightedTab(position: Int) {
         val layoutInflater = LayoutInflater.from(this@ApiActivity)

@@ -1,4 +1,5 @@
-package com.example.pictureoftheday
+package com.example.pictureoftheday.ui.api
+
 
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
@@ -25,15 +26,6 @@ class ViewPagerAdapter(private val fragmentManager: FragmentManager) :
     override fun getCount(): Int {
         return fragments.size
     }
-
-/*    override fun getPageTitle(position: Int): CharSequence? {
-        return when (position) {
-            0 -> "Earth"
-            1 -> "Mars"
-            2 -> "Weather"
-            else -> "Earth"
-        }
-    }*/
 
     override fun getPageTitle(position: Int): CharSequence? {
         return null

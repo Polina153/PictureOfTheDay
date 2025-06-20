@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    >
+    <item
+        android:id="@+id/bottom_view_earth"
+        android:icon="@drawable/ic_earth"
+        android:title="Earth"
+        app:tooltipText="Earth"/>
+
+    <item
+        android:id="@+id/bottom_view_mars"
+        android:icon="@drawable/ic_mars"
+        android:title="Mars"
+        app:tooltipText="Mars"/>
+
+    <item
+        android:id="@+id/bottom_view_weather"
+        android:icon="@drawable/ic_system"
+        android:title="Weather"
+        app:tooltipText="Weather"/>
+
+    <item
+        android:id="@+id/bottom_bin"
+        android:icon="@drawable/ic_trash_bin"
+        android:title="Bin"
+        app:tooltipText="Bin"/>
+
+    <item
+        android:id="@+id/bottom_gps"
+        android:icon="@drawable/ic_gps"
+        android:title="GPS"
+        app:tooltipText="GPS"/>
+</menu>

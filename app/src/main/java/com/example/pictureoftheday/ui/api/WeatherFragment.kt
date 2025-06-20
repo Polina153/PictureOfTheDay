@@ -1,10 +1,11 @@
-package com.example.pictureoftheday
+package com.example.pictureoftheday.ui.api
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
+import com.example.pictureoftheday.R
 
 class WeatherFragment : Fragment() {
     override fun onCreateView(
