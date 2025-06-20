@@ -88,4 +88,6 @@ dependencies {
     implementation(libs.coil.svg)
     implementation(libs.coil.network.okhttp)
     implementation("io.coil-kt.coil3:coil-network-okhttp:3.0.4")
+
+    implementation ("me.relex:circleindicator:2.1.6")
 }
