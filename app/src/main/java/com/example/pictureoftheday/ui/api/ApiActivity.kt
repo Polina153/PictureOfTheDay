@@ -37,7 +37,7 @@ class ApiActivity : AppCompatActivity() {
         val indicator: CircleIndicator = view.findViewById<View>(R.id.indicator) as CircleIndicator
         indicator.setViewPager(binding.viewPager)
         indicator.createIndicators(3, 0)
-        indicator.animatePageSelected(2)
+        indicator.animatePageSelected(0)
 
         binding.tabLayout.setupWithViewPager(binding.viewPager)
         /* binding.tabLayout.getTabAt(1)?.setIcon(R.drawable.ic_mars)
