@@ -1,37 +1,21 @@
 package com.example.pictureoftheday
 
-import android.annotation.SuppressLint
-import android.graphics.Rect
 import android.os.Bundle
 import android.view.Gravity
-import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.FrameLayout
-import android.widget.ImageView
+import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import androidx.recyclerview.widget.RecyclerView
-import androidx.transition.ArcMotion
 import androidx.transition.ChangeBounds
-import androidx.transition.ChangeImageTransform
-import androidx.transition.Explode
-import androidx.transition.Fade
-import androidx.transition.Slide
-import androidx.transition.Transition
-import androidx.transition.TransitionListenerAdapter
 import androidx.transition.TransitionManager
-import androidx.transition.TransitionSet
 import com.example.pictureoftheday.databinding.ActivityAnimationsBinding
 
 class AnimationsActivity : AppCompatActivity() {
 
     private var _binding: ActivityAnimationsBinding? = null
     private val binding get() = _binding!!
-
-    private var toRightAnimation = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,22 +29,27 @@ class AnimationsActivity : AppCompatActivity() {
             insets
         }
 
-        binding.button.setOnClickListener {
-            val changeBounds = ChangeBounds()
-            changeBounds.setPathMotion(ArcMotion())
-            changeBounds.duration = 500
-            TransitionManager.beginDelayedTransition(
-                binding.transitionsContainer,
-                changeBounds
-            )
-
-            toRightAnimation = !toRightAnimation
-            val params = binding.button.layoutParams as FrameLayout.LayoutParams
-            params.gravity =
-                if (toRightAnimation) Gravity.END or Gravity.BOTTOM else Gravity.START or Gravity.TOP
-            binding.button.layoutParams = params
+        val titles: MutableList<String> = ArrayList()
+        for (i in 0..4) {
+            titles.add(String.format("Item %d", i + 1))
         }
+        createViews(binding.transitionsContainer, titles)
+        binding.button.setOnClickListener {
+            TransitionManager.beginDelayedTransition(binding.transitionsContainer, ChangeBounds())
+            titles.shuffle()
+            createViews(binding.transitionsContainer, titles)
+        }
+    }
 
-
+    private fun createViews(layout: ViewGroup, titles: List<String>) {
+        layout.removeAllViews()
+        for (title in titles) {
+            val textView = TextView(this)
+            textView.text = title
+            textView.gravity = Gravity.CENTER_HORIZONTAL
+            ViewCompat.setTransitionName(textView, title)
+            layout.addView(textView)
+        }
     }
 }
+
