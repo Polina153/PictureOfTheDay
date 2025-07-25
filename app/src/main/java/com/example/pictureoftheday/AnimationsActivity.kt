@@ -30,6 +30,9 @@ class AnimationsActivity : AppCompatActivity() {
             insets
         }
         setFAB()
+        binding.scrollView.setOnScrollChangeListener { _, _, _, _, _ ->
+            binding.header.isSelected = binding.scrollView.canScrollVertically(-1)
+        }
     }
 
     private fun setFAB() {
