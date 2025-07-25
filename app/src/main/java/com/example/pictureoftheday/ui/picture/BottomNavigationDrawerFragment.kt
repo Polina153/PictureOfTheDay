@@ -5,8 +5,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import com.example.pictureoftheday.AnimationsActivity
+import com.example.pictureoftheday.AnimationsActivityBonus
 import com.example.pictureoftheday.R
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.navigation.NavigationView
@@ -25,12 +25,12 @@ class BottomNavigationDrawerFragment : BottomSheetDialogFragment() {
         super.onActivityCreated(savedInstanceState)
 
         val navigationView = requireView().findViewById<NavigationView>(R.id.navigation_view)
-        val intent = Intent(requireActivity(),AnimationsActivity::class.java)
+        val intentAnimations = Intent(requireActivity(), AnimationsActivity::class.java)
+        val intentAnimationsBonus = Intent(requireActivity(), AnimationsActivityBonus::class.java)
         navigationView.setNavigationItemSelectedListener { menuItem ->
             when (menuItem.itemId) {
-                R.id.navigation_one -> /*Toast.makeText(context, "1", Toast.LENGTH_SHORT).show()*/
-                    startActivity(intent)
-                R.id.navigation_two -> Toast.makeText(context, "2", Toast.LENGTH_SHORT).show()
+                R.id.navigation_one -> startActivity(intentAnimations)
+                R.id.navigation_two -> startActivity(intentAnimationsBonus)
             }
             true
         }
