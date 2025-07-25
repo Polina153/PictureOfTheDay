@@ -15,6 +15,9 @@
         android:theme="@style/IndigoTheme"
         tools:targetApi="31">
         <activity
+            android:name=".RecyclerActivity"
+            android:exported="false" />
+        <activity
             android:name=".AnimationsActivityBonus"
             android:exported="false" />
         <activity
