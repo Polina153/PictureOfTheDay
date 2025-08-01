@@ -6,8 +6,8 @@
 
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/marsImageView"
-        android:layout_width="120dp"
-        android:layout_height="120dp"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/bg_mars" />
@@ -22,6 +22,25 @@
         app:layout_constraintStart_toEndOf="@+id/marsImageView"
         app:layout_constraintTop_toTopOf="@+id/marsImageView" />
 
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/addItemImageView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:background="@color/colorAccent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_plus_fab" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/removeItemImageView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/addItemImageView"
+        app:srcCompat="@drawable/ic_archive" />
+
     <View
         android:layout_width="match_parent"
         android:layout_height="1px"
@@ -29,3 +48,4 @@
         app:layout_constraintBottom_toBottomOf="@+id/marsImageView"
         app:layout_constraintStart_toStartOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>
+

@@ -1,5 +1,6 @@
 package com.example.pictureoftheday
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -35,9 +36,9 @@ class RecyclerActivity : AppCompatActivity() {
         }
 
         val data = arrayListOf(
-            Data("Earth"),
-            Data("Earth"),
-            Data("Mars", ""),
+            /*Data("Earth"),
+            Data("Earth"),*/
+            Data("Mars", "")/*,
             Data("Earth"),
             Data("Earth"),
             Data("Earth"),
@@ -45,19 +46,19 @@ class RecyclerActivity : AppCompatActivity() {
             Data("Earth"),
             Data("Earth"),
             Data("Earth"),
-            Data("Mars", null)
+            Data("Mars", null)*/
         )
 
         data.add(0, Data("Header"))
 
-        binding.recyclerView.addItemDecoration(
+       /* binding.recyclerView.addItemDecoration(
             DividerItemDecoration(
                 this,
                 LinearLayoutManager.VERTICAL
             )
-        )
+        )*/
 
-        binding.recyclerView.adapter = RecyclerActivityAdapter(
+        val adapter = RecyclerActivityAdapter(
             object : RecyclerActivityAdapter.OnListItemClickListener {
                 override fun onItemClick(data: Data) {
                     Toast.makeText(this@RecyclerActivity, data.someText, Toast.LENGTH_SHORT).show()
@@ -66,11 +67,15 @@ class RecyclerActivity : AppCompatActivity() {
             data
         )
 
+        binding.recyclerView.adapter = adapter
+        binding.recyclerActivityFAB.setOnClickListener { adapter.appendItem() }
+
+
     }
 
     class RecyclerActivityAdapter(
         private var onListItemClickListener: OnListItemClickListener,
-        private var data: List<Data>
+        private var data: MutableList<Data>
     ) :
         RecyclerView.Adapter<BaseViewHolder>() {
 
@@ -114,6 +119,15 @@ class RecyclerActivity : AppCompatActivity() {
             }
         }
 
+        @SuppressLint("NotifyDataSetChanged")
+        fun appendItem() {
+            data.add(generateItem())
+            //notifyDataSetChanged()
+            notifyItemInserted(itemCount - 1)
+        }
+
+        private fun generateItem() = Data("Mars", "")
+
         inner class EarthViewHolder(view: View) : BaseViewHolder(view) {
 
             override fun bind(data: Data) {
@@ -131,13 +145,34 @@ class RecyclerActivity : AppCompatActivity() {
 
         inner class MarsViewHolder(view: View) : BaseViewHolder(view) {
 
-            override fun bind(data: Data) {
+            /*override fun bind(data: Data) {
                 itemView.findViewById<ImageView>(R.id.marsImageView)
                     .setOnClickListener { onListItemClickListener.onItemClick(data) }
             }
+        }*/
+
+
+        override fun bind(data: Data) {
+            itemView.findViewById<ImageView>(R.id.marsImageView).setOnClickListener { onListItemClickListener.onItemClick(data) }
+            itemView.findViewById<ImageView>(R.id.addItemImageView).setOnClickListener { addItem() }
+            itemView.findViewById<ImageView>(R.id.removeItemImageView).setOnClickListener { removeItem() }
         }
 
-        inner class HeaderViewHolder(view: View) : BaseViewHolder(view) {
+        private fun addItem() {
+            data.add(layoutPosition, generateItem())
+            //notifyDataSetChanged()
+            notifyItemInserted(layoutPosition)
+        }
+
+        private fun removeItem() {
+            data.removeAt(layoutPosition)
+            //notifyDataSetChanged()
+            notifyItemRemoved(layoutPosition)
+        }
+    }
+
+
+    inner class HeaderViewHolder(view: View) : BaseViewHolder(view) {
 
             override fun bind(data: Data) {
                 itemView.setOnClickListener { onListItemClickListener.onItemClick(data) }
