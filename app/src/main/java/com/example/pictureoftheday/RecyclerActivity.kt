@@ -51,12 +51,12 @@ class RecyclerActivity : AppCompatActivity() {
 
         data.add(0, Data("Header"))
 
-       /* binding.recyclerView.addItemDecoration(
-            DividerItemDecoration(
-                this,
-                LinearLayoutManager.VERTICAL
-            )
-        )*/
+        /* binding.recyclerView.addItemDecoration(
+             DividerItemDecoration(
+                 this,
+                 LinearLayoutManager.VERTICAL
+             )
+         )*/
 
         val adapter = RecyclerActivityAdapter(
             object : RecyclerActivityAdapter.OnListItemClickListener {
@@ -152,27 +152,53 @@ class RecyclerActivity : AppCompatActivity() {
         }*/
 
 
-        override fun bind(data: Data) {
-            itemView.findViewById<ImageView>(R.id.marsImageView).setOnClickListener { onListItemClickListener.onItemClick(data) }
-            itemView.findViewById<ImageView>(R.id.addItemImageView).setOnClickListener { addItem() }
-            itemView.findViewById<ImageView>(R.id.removeItemImageView).setOnClickListener { removeItem() }
+            override fun bind(data: Data) {
+                itemView.findViewById<ImageView>(R.id.marsImageView)
+                    .setOnClickListener { onListItemClickListener.onItemClick(data) }
+                itemView.findViewById<ImageView>(R.id.addItemImageView)
+                    .setOnClickListener { addItem() }
+                itemView.findViewById<ImageView>(R.id.removeItemImageView)
+                    .setOnClickListener { removeItem() }
+                itemView.findViewById<ImageView>(R.id.moveItemDown)
+                    .setOnClickListener { moveDown() }
+                itemView.findViewById<ImageView>(R.id.moveItemUp)
+                    .setOnClickListener { moveUp() }
+            }
+
+            private fun moveUp() {
+                layoutPosition.takeIf { it > 1 }?.also { currentPosition ->
+                    data.removeAt(currentPosition).apply {
+                        data.add(currentPosition - 1, this)
+                    }
+                    notifyItemMoved(currentPosition, currentPosition - 1)
+                }
+            }
+
+            private fun moveDown() {
+                layoutPosition.takeIf { it < data.size - 1 }?.also { currentPosition ->
+                    data.removeAt(currentPosition).apply {
+                        data.add(currentPosition + 1, this)
+                    }
+                    notifyItemMoved(currentPosition, currentPosition + 1)
+                }
+            }
+
+
+            private fun addItem() {
+                data.add(layoutPosition, generateItem())
+                //notifyDataSetChanged()
+                notifyItemInserted(layoutPosition)
+            }
+
+            private fun removeItem() {
+                data.removeAt(layoutPosition)
+                //notifyDataSetChanged()
+                notifyItemRemoved(layoutPosition)
+            }
         }
 
-        private fun addItem() {
-            data.add(layoutPosition, generateItem())
-            //notifyDataSetChanged()
-            notifyItemInserted(layoutPosition)
-        }
 
-        private fun removeItem() {
-            data.removeAt(layoutPosition)
-            //notifyDataSetChanged()
-            notifyItemRemoved(layoutPosition)
-        }
-    }
-
-
-    inner class HeaderViewHolder(view: View) : BaseViewHolder(view) {
+        inner class HeaderViewHolder(view: View) : BaseViewHolder(view) {
 
             override fun bind(data: Data) {
                 itemView.setOnClickListener { onListItemClickListener.onItemClick(data) }
