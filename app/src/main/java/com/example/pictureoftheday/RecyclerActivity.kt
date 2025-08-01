@@ -72,9 +72,9 @@ class RecyclerActivity : AppCompatActivity() {
         private var onListItemClickListener: OnListItemClickListener,
         private var data: List<Data>
     ) :
-        RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+        RecyclerView.Adapter<BaseViewHolder>() {
 
-        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder {
             val inflater = LayoutInflater.from(parent.context)
             return when (viewType) {
                 TYPE_EARTH -> EarthViewHolder(
@@ -97,23 +97,8 @@ class RecyclerActivity : AppCompatActivity() {
             }
         }
 
-        override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-            when (getItemViewType(position)) {
-                TYPE_EARTH -> {
-                    holder as EarthViewHolder
-                    holder.bind(data[position])
-                }
-
-                TYPE_MARS -> {
-                    holder as MarsViewHolder
-                    holder.bind(data[position])
-                }
-
-                else -> {
-                    holder as HeaderViewHolder
-                    holder.bind(data[position])
-                }
-            }
+        override fun onBindViewHolder(holder: BaseViewHolder, position: Int) {
+            holder.bind(data[position])
         }
 
         override fun getItemCount(): Int {
@@ -129,9 +114,9 @@ class RecyclerActivity : AppCompatActivity() {
             }
         }
 
-        inner class EarthViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+        inner class EarthViewHolder(view: View) : BaseViewHolder(view) {
 
-            fun bind(data: Data) {
+            override fun bind(data: Data) {
                 if (layoutPosition != RecyclerView.NO_POSITION) {
                     itemView.findViewById<TextView>(R.id.descriptionTextView).text =
                         data.someDescription
@@ -144,17 +129,17 @@ class RecyclerActivity : AppCompatActivity() {
             }
         }
 
-        inner class MarsViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+        inner class MarsViewHolder(view: View) : BaseViewHolder(view) {
 
-            fun bind(data: Data) {
+            override fun bind(data: Data) {
                 itemView.findViewById<ImageView>(R.id.marsImageView)
                     .setOnClickListener { onListItemClickListener.onItemClick(data) }
             }
         }
 
-        inner class HeaderViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+        inner class HeaderViewHolder(view: View) : BaseViewHolder(view) {
 
-            fun bind(data: Data) {
+            override fun bind(data: Data) {
                 itemView.setOnClickListener { onListItemClickListener.onItemClick(data) }
             }
         }
