@@ -1,6 +1,7 @@
 package com.example.pictureoftheday
 
 import android.annotation.SuppressLint
+import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -13,8 +14,10 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.pictureoftheday.RecyclerActivity.RecyclerActivityAdapter
 import com.example.pictureoftheday.databinding.ActivityRecyclerBinding
 
 class RecyclerActivity : AppCompatActivity() {
@@ -53,6 +56,10 @@ class RecyclerActivity : AppCompatActivity() {
         binding.recyclerView.adapter = adapter
         binding.recyclerActivityFAB.setOnClickListener { adapter.appendItem() }
 
+        ItemTouchHelper(ItemTouchHelperCallback(adapter))
+            .attachToRecyclerView(binding.recyclerView)
+
+
 
     }
 
@@ -60,7 +67,7 @@ class RecyclerActivity : AppCompatActivity() {
         private var onListItemClickListener: OnListItemClickListener,
         private var data: MutableList<Pair<Data, Boolean>>
     ) :
-        RecyclerView.Adapter<BaseViewHolder>() {
+        RecyclerView.Adapter<BaseViewHolder>(), ItemTouchHelperAdapter {
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder {
             val inflater = LayoutInflater.from(parent.context)
@@ -109,6 +116,17 @@ class RecyclerActivity : AppCompatActivity() {
         }
 
         private fun generateItem() = Pair(Data(1, "Mars", ""), false)
+        override fun onItemMove(fromPosition: Int, toPosition: Int) {
+            data.removeAt(fromPosition).apply {
+                data.add(if (toPosition > fromPosition) toPosition - 1 else toPosition, this)
+            }
+            notifyItemMoved(fromPosition, toPosition)
+        }
+
+        override fun onItemDismiss(position: Int) {
+            data.removeAt(position)
+            notifyItemRemoved(position)
+        }
 
         inner class EarthViewHolder(view: View) : BaseViewHolder(view) {
 
@@ -125,15 +143,13 @@ class RecyclerActivity : AppCompatActivity() {
             }
         }
 
-        inner class MarsViewHolder(view: View) : BaseViewHolder(view) {
+        inner class MarsViewHolder(view: View) : BaseViewHolder(view), ItemTouchHelperViewHolder {
 
             /*override fun bind(data: Data) {
                 itemView.findViewById<ImageView>(R.id.marsImageView)
                     .setOnClickListener { onListItemClickListener.onItemClick(data) }
             }
         }*/
-
-
             override fun bind(dataItem: Pair<Data, Boolean>) {
                 itemView.findViewById<ImageView>(R.id.marsImageView)
                     .setOnClickListener { onListItemClickListener.onItemClick(dataItem.first) }
@@ -187,6 +203,15 @@ class RecyclerActivity : AppCompatActivity() {
                 data.removeAt(layoutPosition)
                 notifyItemRemoved(layoutPosition)
             }
+
+            override fun onItemSelected() {
+                itemView.setBackgroundColor(Color.LTGRAY)
+            }
+
+            override fun onItemClear() {
+                itemView.setBackgroundColor(0)
+            }
+
         }
 
 
@@ -208,3 +233,72 @@ class RecyclerActivity : AppCompatActivity() {
         }
     }
 }
+
+interface ItemTouchHelperAdapter {
+    fun onItemMove(fromPosition: Int, toPosition: Int)
+
+    fun onItemDismiss(position: Int)
+}
+
+interface ItemTouchHelperViewHolder {
+
+    fun onItemSelected()
+
+    fun onItemClear()
+}
+
+class ItemTouchHelperCallback(private val adapter: RecyclerActivityAdapter) :
+    ItemTouchHelper.Callback() {
+
+    override fun isLongPressDragEnabled(): Boolean {
+        return true
+    }
+
+    override fun isItemViewSwipeEnabled(): Boolean {
+        return true
+    }
+
+    override fun getMovementFlags(
+        recyclerView: RecyclerView,
+        viewHolder: RecyclerView.ViewHolder
+    ): Int {
+        val dragFlags = ItemTouchHelper.UP or ItemTouchHelper.DOWN
+        val swipeFlags = ItemTouchHelper.START or ItemTouchHelper.END
+        return makeMovementFlags(
+            dragFlags,
+            swipeFlags
+        )
+    }
+
+    override fun onMove(
+        recyclerView: RecyclerView,
+        source: RecyclerView.ViewHolder,
+        target: RecyclerView.ViewHolder
+    ): Boolean {
+        adapter.onItemMove(source.adapterPosition, target.adapterPosition)
+        return true
+    }
+
+    override fun onSwiped(viewHolder: RecyclerView.ViewHolder, i: Int) {
+        adapter.onItemDismiss(viewHolder.adapterPosition)
+    }
+
+    override fun onSelectedChanged(viewHolder: RecyclerView.ViewHolder?, actionState: Int) {
+        if (actionState != ItemTouchHelper.ACTION_STATE_IDLE) {
+            val itemViewHolder = viewHolder as ItemTouchHelperViewHolder
+            itemViewHolder.onItemSelected()
+        }
+        super.onSelectedChanged(viewHolder, actionState)
+    }
+
+    override fun clearView(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder) {
+        super.clearView(recyclerView, viewHolder)
+        val itemViewHolder = viewHolder as ItemTouchHelperViewHolder
+        itemViewHolder.onItemClear()
+    }
+}
+
+
+
+
+
