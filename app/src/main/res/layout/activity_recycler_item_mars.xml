@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/itemContainer"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@android:color/white"
     >
 
     <androidx.appcompat.widget.AppCompatImageView
@@ -12,7 +14,8 @@
         android:layout_height="80dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/bg_mars" />
+        app:srcCompat="@drawable/bg_mars"
+        />
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/marsTextView"
@@ -23,51 +26,8 @@
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@+id/marsImageView"
         app:layout_constraintStart_toEndOf="@+id/marsImageView"
-        app:layout_constraintTop_toTopOf="@+id/marsImageView" />
-
-    <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/moveItemUp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:tint="@color/design_default_color_error"
-        app:layout_constraintBottom_toBottomOf="@+id/marsTextView"
-        app:layout_constraintEnd_toStartOf="@+id/addItemImageView"
-        app:layout_constraintStart_toEndOf="@+id/marsTextView"
-        app:layout_constraintTop_toTopOf="@+id/marsTextView"
-        app:srcCompat="@android:drawable/arrow_up_float" />
-
-    <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/moveItemDown"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:tint="@color/design_default_color_error"
-        app:layout_constraintBottom_toBottomOf="@+id/marsTextView"
-        app:layout_constraintEnd_toStartOf="@+id/addItemImageView"
-        app:layout_constraintStart_toEndOf="@+id/moveItemUp"
-        app:layout_constraintTop_toTopOf="@+id/marsTextView"
-        app:srcCompat="@android:drawable/arrow_down_float" />
-
-
-    <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/addItemImageView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:background="@color/colorAccent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_plus_fab" />
-
-    <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/removeItemImageView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/addItemImageView"
-        app:srcCompat="@drawable/ic_archive" />
+        app:layout_constraintTop_toTopOf="@+id/marsImageView"
+        />
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/marsDescriptionTextView"
@@ -80,13 +40,76 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/marsImageView"
-        tools:visibility="visible" />
+        tools:visibility="visible"
+        />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/moveItemUp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:tint="@color/design_default_color_error"
+        app:layout_constraintBottom_toBottomOf="@+id/marsTextView"
+        app:layout_constraintEnd_toStartOf="@+id/addItemImageView"
+        app:layout_constraintStart_toEndOf="@+id/marsTextView"
+        app:layout_constraintTop_toTopOf="@+id/marsTextView"
+        app:srcCompat="@android:drawable/arrow_up_float"
+        />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/moveItemDown"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:tint="@color/design_default_color_error"
+        app:layout_constraintBottom_toBottomOf="@+id/marsTextView"
+        app:layout_constraintEnd_toStartOf="@+id/addItemImageView"
+        app:layout_constraintStart_toEndOf="@+id/moveItemUp"
+        app:layout_constraintTop_toTopOf="@+id/marsTextView"
+        app:srcCompat="@android:drawable/arrow_down_float"
+        />
+
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/addItemImageView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:background="@color/colorAccent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/dragHandleImageView"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_plus_fab"
+        />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/removeItemImageView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        app:layout_constraintEnd_toStartOf="@+id/dragHandleImageView"
+        app:layout_constraintTop_toBottomOf="@id/addItemImageView"
+        app:srcCompat="@drawable/ic_archive"
+        />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/dragHandleImageView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="15dp"
+        android:tint="@color/cardview_shadow_start_color"
+        app:layout_constraintBottom_toBottomOf="@+id/marsTextView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/marsTextView"
+        app:srcCompat="@drawable/ic_hamburger_menu_bottom_bar"
+        />
 
     <View
         android:layout_width="match_parent"
         android:layout_height="1px"
         android:background="#000"
         app:layout_constraintBottom_toBottomOf="@+id/marsImageView"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        />
 </androidx.constraintlayout.widget.ConstraintLayout>
 

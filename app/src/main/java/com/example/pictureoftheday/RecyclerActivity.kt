@@ -1,9 +1,11 @@
 package com.example.pictureoftheday
 
 import android.annotation.SuppressLint
+import android.graphics.Canvas
 import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
@@ -11,6 +13,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.MotionEventCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -19,11 +22,14 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.pictureoftheday.RecyclerActivity.RecyclerActivityAdapter
 import com.example.pictureoftheday.databinding.ActivityRecyclerBinding
+import kotlin.math.abs
 
 class RecyclerActivity : AppCompatActivity() {
 
     private var _binding: ActivityRecyclerBinding? = null
     private val binding get() = _binding!!
+
+    lateinit var itemTouchHelper: ItemTouchHelper
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,10 +45,10 @@ class RecyclerActivity : AppCompatActivity() {
         }
 
         val data = arrayListOf(
-            Pair(Data(1, "Mars", ""), false)//not sure!
+            Pair(Data(1, "Mars", ""), false)
         )
 
-        data.add(0, Pair(Data(0, "Header"), false))//not sure!
+        data.add(0, Pair(Data(0, "Header"), false))
 
         val adapter = RecyclerActivityAdapter(
             object : RecyclerActivityAdapter.OnListItemClickListener {
@@ -50,14 +56,20 @@ class RecyclerActivity : AppCompatActivity() {
                     Toast.makeText(this@RecyclerActivity, data.someText, Toast.LENGTH_SHORT).show()
                 }
             },
-            data
+            data,
+            object : RecyclerActivityAdapter.OnStartDragListener {
+                override fun onStartDrag(viewHolder: RecyclerView.ViewHolder) {
+                    itemTouchHelper.startDrag(viewHolder)
+                }
+            }
         )
 
         binding.recyclerView.adapter = adapter
         binding.recyclerActivityFAB.setOnClickListener { adapter.appendItem() }
 
-        ItemTouchHelper(ItemTouchHelperCallback(adapter))
-            .attachToRecyclerView(binding.recyclerView)
+        itemTouchHelper = ItemTouchHelper(ItemTouchHelperCallback(adapter))
+        itemTouchHelper.attachToRecyclerView(binding.recyclerView)
+
 
 
 
@@ -65,7 +77,8 @@ class RecyclerActivity : AppCompatActivity() {
 
     class RecyclerActivityAdapter(
         private var onListItemClickListener: OnListItemClickListener,
-        private var data: MutableList<Pair<Data, Boolean>>
+        private var data: MutableList<Pair<Data, Boolean>>,
+        private val dragListener: OnStartDragListener
     ) :
         RecyclerView.Adapter<BaseViewHolder>(), ItemTouchHelperAdapter {
 
@@ -145,11 +158,7 @@ class RecyclerActivity : AppCompatActivity() {
 
         inner class MarsViewHolder(view: View) : BaseViewHolder(view), ItemTouchHelperViewHolder {
 
-            /*override fun bind(data: Data) {
-                itemView.findViewById<ImageView>(R.id.marsImageView)
-                    .setOnClickListener { onListItemClickListener.onItemClick(data) }
-            }
-        }*/
+            @SuppressLint("ClickableViewAccessibility")
             override fun bind(dataItem: Pair<Data, Boolean>) {
                 itemView.findViewById<ImageView>(R.id.marsImageView)
                     .setOnClickListener { onListItemClickListener.onItemClick(dataItem.first) }
@@ -164,6 +173,13 @@ class RecyclerActivity : AppCompatActivity() {
                 itemView.findViewById<TextView>(R.id.marsDescriptionTextView).visibility =
                     if (dataItem.second) View.VISIBLE else View.GONE
                 itemView.findViewById<TextView>(R.id.marsTextView).setOnClickListener { toggleText() }
+                itemView.findViewById<ImageView>(R.id.dragHandleImageView).setOnTouchListener { _, event ->
+                    if (MotionEventCompat.getActionMasked(event) == MotionEvent.ACTION_DOWN) {
+                        dragListener.onStartDrag(this)
+                    }
+                    false
+                }
+
 
             }
 
@@ -209,7 +225,7 @@ class RecyclerActivity : AppCompatActivity() {
             }
 
             override fun onItemClear() {
-                itemView.setBackgroundColor(0)
+                itemView.setBackgroundColor(Color.WHITE)
             }
 
         }
@@ -224,6 +240,10 @@ class RecyclerActivity : AppCompatActivity() {
 
         interface OnListItemClickListener {
             fun onItemClick(data: Data)
+        }
+
+        interface OnStartDragListener {
+            fun onStartDrag(viewHolder: RecyclerView.ViewHolder)
         }
 
         companion object {
@@ -296,6 +316,30 @@ class ItemTouchHelperCallback(private val adapter: RecyclerActivityAdapter) :
         val itemViewHolder = viewHolder as ItemTouchHelperViewHolder
         itemViewHolder.onItemClear()
     }
+
+    override fun onChildDraw(
+        c: Canvas,
+        recyclerView: RecyclerView,
+        viewHolder: RecyclerView.ViewHolder,
+        dX: Float,
+        dY: Float,
+        actionState: Int,
+        isCurrentlyActive: Boolean
+    ) {
+        if (actionState == ItemTouchHelper.ACTION_STATE_SWIPE) {
+            val width = viewHolder.itemView.width.toFloat()
+            val alpha = 1.0f - abs(dX) / width
+            viewHolder.itemView.alpha = alpha
+            viewHolder.itemView.translationX = dX
+        } else {
+            super.onChildDraw(
+                c, recyclerView, viewHolder, dX, dY,
+                actionState, isCurrentlyActive
+            )
+        }
+    }
+
+
 }
 
 
