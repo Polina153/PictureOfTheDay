@@ -8,7 +8,7 @@ import android.view.ViewGroup
 import com.example.pictureoftheday.AnimationsActivity
 import com.example.pictureoftheday.AnimationsActivityBonus
 import com.example.pictureoftheday.R
-import com.example.pictureoftheday.RecyclerActivity
+import com.example.pictureoftheday.ui.recycler.RecyclerActivity
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.navigation.NavigationView
 
