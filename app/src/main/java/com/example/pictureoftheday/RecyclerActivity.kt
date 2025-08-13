@@ -115,7 +115,16 @@ class RecyclerActivity : AppCompatActivity() {
             notifyItemInserted(itemCount - 1)
         }
 
-        private fun generateItem() = Pair(Data(1, "Mars", ""), false)
+        //private fun generateItem() = Pair(Data(1, "Mars", ""), false)
+        private fun generateItem(): Pair<Data, Boolean> {
+            val random = (0..1).random()
+            return if (random == 0) {
+                Pair(Data(1, "Earth", "Description for Earth"), false)
+            } else {
+                Pair(Data(1, "Mars", ""), false)
+            }
+        }
+
         override fun onItemMove(fromPosition: Int, toPosition: Int) {
             data.removeAt(fromPosition).apply {
                 data.add(if (toPosition > fromPosition) toPosition - 1 else toPosition, this)
@@ -128,7 +137,7 @@ class RecyclerActivity : AppCompatActivity() {
             notifyItemRemoved(position)
         }
 
-        inner class EarthViewHolder(view: View) : BaseViewHolder(view) {
+        inner class EarthViewHolder(view: View) : BaseViewHolder(view), ItemTouchHelperViewHolder {
 
             override fun bind(dataItem: Pair<Data, Boolean>) {
                 if (layoutPosition != RecyclerView.NO_POSITION) {
@@ -140,6 +149,14 @@ class RecyclerActivity : AppCompatActivity() {
                         )
                     }
                 }
+            }
+
+            override fun onItemSelected() {
+                itemView.setBackgroundColor(Color.LTGRAY)
+            }
+
+            override fun onItemClear() {
+                itemView.setBackgroundColor(Color.TRANSPARENT)
             }
         }
 
