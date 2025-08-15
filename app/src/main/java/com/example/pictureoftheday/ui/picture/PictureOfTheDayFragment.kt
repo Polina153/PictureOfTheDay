@@ -1,6 +1,7 @@
 package com.example.pictureoftheday.ui.picture
 
 import android.content.Intent
+import android.graphics.Typeface
 import android.net.Uri
 import android.os.Bundle
 import android.text.method.ScrollingMovementMethod
@@ -64,10 +65,15 @@ class PictureOfTheDayFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         init();
-
+        /*activity?.let {
+            binding.textLayout.textView.typeface = Typeface.createFromAsset(
+                it.assets,
+                "PurplemagicdemoSvg-x32mO.otf"
+            )// или "fonts/Niceyear.ttf", если шрифты в папке assets/fonts
+        }*/
         inputLayout.setEndIconOnClickListener {
             startActivity(Intent(Intent.ACTION_VIEW).apply {
-                data = Uri.parse("https://en.wikipedia.org/wiki/${inputEditText.text.toString()}")
+                data = Uri.parse("https://en.wikipedia.org/wiki/${inputEditText.text}")
             })
         }
         setBottomSheetBehavior(view.findViewById(R.id.bottom_sheet_container))
@@ -107,18 +113,21 @@ class PictureOfTheDayFragment : Fragment() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.app_bar_fav -> activity?.let { startActivity(Intent(it, ApiActivity::class.java)) }
-            R.id.app_bar_settings -> activity?.let { startActivity(
-                Intent(
-                    it,
-                    ApiBottomActivity::class.java
+            R.id.app_bar_settings -> activity?.let {
+                startActivity(
+                    Intent(
+                        it,
+                        ApiBottomActivity::class.java
+                    )
                 )
-            ) }
+            }
 
             android.R.id.home -> {
                 activity?.let {
                     BottomNavigationDrawerFragment().show(it.supportFragmentManager, "tag")
                 }
             }
+
             android.R.id.title -> {
             }
         }
@@ -166,7 +175,6 @@ class PictureOfTheDayFragment : Fragment() {
     }
 
 
-
     private fun init() {
         title = requireView().findViewById(R.id.bottom_sheet_description_header)
         description = requireView().findViewById(R.id.bottom_sheet_description)
@@ -190,6 +198,9 @@ class PictureOfTheDayFragment : Fragment() {
             is PictureOfTheDayData.Success -> {
                 val serverResponseData = data.serverResponseData
                 val url = serverResponseData.url
+                serverResponseData.explanation?.let {
+                    binding.textLayout.textView.text = it
+                }
                 if (url.isNullOrEmpty()) {
                     //Отобразите ошибку
                     //showError("Сообщение, что ссылка пустая")
